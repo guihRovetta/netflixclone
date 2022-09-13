@@ -9,17 +9,26 @@ const DEFAULT_STYLE_TEXT: TextStyle = {
   fontFamily: 'Poppins-Medium',
   fontWeight: '500',
   color: 'white',
-  fontSize: getSizeValue(4),
+  fontSize: getSizeValue(3.5),
+};
+
+const PALLETE = {
+  black: '#221f1f',
+  red: '#e50914',
+  white: '#f5f5f1',
+  gray: '#818488',
 };
 
 export const theme = createTheme({
   colors: {
-    black: '#221f1f',
-    red: '#e50914',
-    white: '#f5f5f1',
-    gray: '#818488',
+    background: PALLETE.black,
+    black: PALLETE.black,
+    red: PALLETE.red,
+    white: PALLETE.white,
+    gray: PALLETE.gray,
   },
   spacing: {
+    0: getSizeValue(0),
     1: getSizeValue(1),
     2: getSizeValue(2),
     3: getSizeValue(3),
@@ -50,13 +59,13 @@ export const theme = createTheme({
       fontFamily: 'Poppins-SemiBold',
       fontWeight: '600',
       color: 'white',
-      fontSize: getSizeValue(6),
+      fontSize: getSizeValue(5),
     },
     header: {
       fontFamily: 'Poppins-Bold',
       fontWeight: '700',
       color: 'white',
-      fontSize: getSizeValue(8),
+      fontSize: getSizeValue(6),
     },
   },
 });
