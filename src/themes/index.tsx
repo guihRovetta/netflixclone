@@ -17,6 +17,10 @@ const PALLETE = {
   red: '#e50914',
   white: '#f5f5f1',
   gray: '#818488',
+  limeGreen: '#32CD32',
+  deepSkyBlue: '#00BFFF',
+  yellow: '#FFFF00',
+  orange: '#FFA500',
 };
 
 export const theme = createTheme({
@@ -26,6 +30,10 @@ export const theme = createTheme({
     red: PALLETE.red,
     white: PALLETE.white,
     gray: PALLETE.gray,
+    green: PALLETE.limeGreen,
+    blue: PALLETE.deepSkyBlue,
+    yellow: PALLETE.yellow,
+    orange: PALLETE.orange,
   },
   spacing: {
     0: getSizeValue(0),
