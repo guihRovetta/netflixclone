@@ -6,13 +6,16 @@ export const Header = ({
   title,
   before,
   after,
+  actions,
 }: {
   title: string;
   before?: React.ReactNode;
   after?: React.ReactNode;
+  actions?: React.ReactNode;
 }) => (
   <Box>
     {before}
+
     <Box
       alignItems="center"
       justifyContent="space-between"
@@ -21,10 +24,11 @@ export const Header = ({
       py={4}>
       <Text variant="header">{title}</Text>
 
-      <Box alignItems="center">
-        <Text>{title}</Text>
+      <Box alignItems="center" flexDirection="row">
+        {actions}
       </Box>
     </Box>
+
     {after}
   </Box>
 );
