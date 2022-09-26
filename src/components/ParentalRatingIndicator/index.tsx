@@ -2,10 +2,12 @@ import React from 'react';
 
 import {Box, Text} from '@internal/components';
 import {Theme} from '@internal/themes';
+import {Item} from '@internal/server/mirage-js';
 
+const DEFAULT_SQUARE_SIZE = 36;
 const PARENTAL_RATING_OBJ: Record<
   string,
-  {color: keyof Theme['colors']; label: string}
+  {color: keyof Theme['colors']; label: Item['parentalRating']}
 > = {
   all: {color: 'green', label: 'L'},
   10: {color: 'blue', label: '10'},
@@ -14,8 +16,6 @@ const PARENTAL_RATING_OBJ: Record<
   16: {color: 'red', label: '16'},
   18: {color: 'black', label: '18'},
 };
-
-const DEFAULT_SQUARE_SIZE = 36;
 
 export const ParentalRatingIndicator = ({value}: {value: string}) => (
   <Box
