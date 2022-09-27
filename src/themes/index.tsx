@@ -49,12 +49,26 @@ export const theme = createTheme({
     10: getSizeValue(10),
     11: getSizeValue(11),
     12: getSizeValue(12),
+    16: getSizeValue(16),
+    20: getSizeValue(20),
+    none: getSizeValue(0),
+    xxs: getSizeValue(0.5),
+    xs: getSizeValue(1),
+    s: getSizeValue(2),
+    m: getSizeValue(4),
+    l: getSizeValue(6),
+    xl: getSizeValue(8),
+    xxl: getSizeValue(10),
   },
   breakpoints: {
     phone: 0,
     tablet: 768,
   },
   textVariants: {
+    small: {
+      ...DEFAULT_STYLE_TEXT,
+      fontSize: getSizeValue(2.5),
+    },
     defaults: DEFAULT_STYLE_TEXT,
     regular: {
       fontFamily: 'Poppins-Regular',
