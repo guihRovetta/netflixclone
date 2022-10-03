@@ -1,5 +1,5 @@
 import React, {useCallback, useMemo, useRef, useState} from 'react';
-import {FlatList, SectionList} from 'react-native';
+import {FlatList, ScrollView, SectionList} from 'react-native';
 import {useTheme} from '@shopify/restyle';
 import {isPast} from 'date-fns';
 
@@ -10,6 +10,7 @@ import {
   Button,
   Image,
   ParentalRatingIndicator,
+  Skeleton,
   Text,
 } from '@internal/components';
 import {Item} from '@internal/server/mirage-js';
@@ -37,6 +38,7 @@ const FixedSectionButton = ({
   />
 );
 
+const IMAGE_HEIGHT = 150;
 const LEFT_OFFSET = 56;
 const LEFT_HEADER_COMPONENT_HEIGHT = 56.5;
 const FLATLIST_OBJ: Record<Item['group'], number> = {
@@ -53,12 +55,7 @@ type WhatsNewFlatList = FlatList<FixedSectionButtonProps>;
 export const WhatsNewScreen = () => {
   const theme = useTheme<Theme>();
 
-  const {
-    data = {pages: []},
-    fetchNextPage,
-    hasNextPage,
-    isFetchingNextPage,
-  } = useGetWhatsNew({nextPage: 10});
+  const {data = [], isLoading} = useGetWhatsNew();
 
   const sectionListRef = useRef<WhatsNewSectionList>({} as WhatsNewSectionList);
   const flatListRef = useRef<WhatsNewFlatList>({} as WhatsNewFlatList);
@@ -68,7 +65,7 @@ export const WhatsNewScreen = () => {
   >('soon');
 
   const memoizedFixedSectionButtons = useMemo(() => {
-    const size = data?.pages[0]?.data?.length;
+    const size = data?.length;
 
     const scrollToPosition = (sectionIndex = 0) => {
       sectionListRef?.current?.scrollToLocation({
@@ -128,7 +125,7 @@ export const WhatsNewScreen = () => {
           position="relative">
           <Image
             source={{uri: item?.media}}
-            style={{height: 150, borderRadius: theme.spacing[2]}}
+            style={{height: IMAGE_HEIGHT, borderRadius: theme.spacing[2]}}
             resizeMode="cover"
           />
           <ParentalRatingIndicator
@@ -146,11 +143,7 @@ export const WhatsNewScreen = () => {
             alignItems="center"
             p={4}>
             <Box flex={1} mr={4}>
-              <Image
-                source={{uri: item?.logo}}
-                style={{height: 40}}
-                resizeMode="contain"
-              />
+              <Image source={{uri: item?.logo}} resizeMode="contain" />
             </Box>
 
             <Box flexDirection="row">
@@ -274,44 +267,102 @@ export const WhatsNewScreen = () => {
           </>
         ),
         after: (
-          <FlatList
-            ref={flatListRef}
-            data={memoizedFixedSectionButtons}
-            renderItem={flatListRenderItem}
-            horizontal={true}
-            showsHorizontalScrollIndicator={false}
-            contentContainerStyle={{marginHorizontal: theme.spacing[4]}}
-          />
+          <>
+            {isLoading ? (
+              <Skeleton style={{marginHorizontal: theme.spacing['4']}}>
+                <Box
+                  flexDirection="row"
+                  justifyContent="space-between"
+                  alignItems="center">
+                  {Array.from({length: 3}, (_, index) => (
+                    <Skeleton.Line
+                      key={`skeleton-fixed-button-${index}`}
+                      width={theme.spacing['10']}
+                      height={theme.spacing['9']}
+                      style={{
+                        borderRadius: 100,
+                        marginRight: theme.spacing['4'],
+                      }}
+                    />
+                  ))}
+                </Box>
+              </Skeleton>
+            ) : (
+              <FlatList
+                ref={flatListRef}
+                data={memoizedFixedSectionButtons}
+                renderItem={flatListRenderItem}
+                horizontal={true}
+                showsHorizontalScrollIndicator={false}
+                contentContainerStyle={{marginHorizontal: theme.spacing[4]}}
+              />
+            )}
+          </>
         ),
       }}>
-      <SectionList
-        ref={sectionListRef}
-        sections={data?.pages[0]?.data}
-        keyExtractor={sectionListKeyExtractor}
-        renderItem={sectionListRenderItem}
-        renderSectionHeader={sectionListRenderSectionHeader}
-        stickySectionHeadersEnabled={true}
-        showsVerticalScrollIndicator={false}
-        style={{
-          marginTop: theme.spacing[4],
-          marginBottom: theme.spacing[20],
-          marginHorizontal: theme.spacing[4],
-        }}
-        onViewableItemsChanged={event => {
-          const {group}: {group: Item['group']} =
-            event?.viewableItems[0]?.item || {};
+      {isLoading ? (
+        <ScrollView contentContainerStyle={{padding: 16}}>
+          {Array.from({length: 3}, (_, index) => (
+            <Box key={`skeleton-section-list-item-${index}`} mb={8}>
+              <Skeleton Left={Skeleton.Media}>
+                <Skeleton.Line height={IMAGE_HEIGHT} />
 
-          if (group && group !== activeSection) {
-            setActiveSection(group);
-            flatListRef?.current?.scrollToIndex({
-              index: FLATLIST_OBJ[group],
-            });
-          }
-        }}
-        viewabilityConfig={{
-          itemVisiblePercentThreshold: 25,
-        }}
-      />
+                <Box
+                  flexDirection="row"
+                  justifyContent="space-between"
+                  alignItems="center">
+                  <Skeleton.Line
+                    width={theme.spacing['8']}
+                    height={theme.spacing['6']}
+                  />
+                  <Skeleton.Line
+                    width={theme.spacing['6']}
+                    height={theme.spacing['10']}
+                  />
+                  <Skeleton.Line
+                    width={theme.spacing['6']}
+                    height={theme.spacing['10']}
+                  />
+                </Box>
+
+                <Skeleton.Line width={theme.spacing['8']} />
+                <Skeleton.Line />
+                <Skeleton.Line />
+                <Skeleton.Line />
+              </Skeleton>
+            </Box>
+          ))}
+        </ScrollView>
+      ) : (
+        <SectionList
+          ref={sectionListRef}
+          sections={data}
+          keyExtractor={sectionListKeyExtractor}
+          renderItem={sectionListRenderItem}
+          renderSectionHeader={sectionListRenderSectionHeader}
+          stickySectionHeadersEnabled={true}
+          showsVerticalScrollIndicator={false}
+          style={{
+            marginTop: theme.spacing[4],
+            marginBottom: theme.spacing[20],
+            marginHorizontal: theme.spacing[4],
+          }}
+          onViewableItemsChanged={event => {
+            const {group}: {group: Item['group']} =
+              event?.viewableItems[0]?.item || {};
+
+            if (group && group !== activeSection) {
+              setActiveSection(group);
+              flatListRef?.current?.scrollToIndex({
+                index: FLATLIST_OBJ[group],
+              });
+            }
+          }}
+          viewabilityConfig={{
+            itemVisiblePercentThreshold: 25,
+          }}
+        />
+      )}
     </BasicScreen>
   );
 };
