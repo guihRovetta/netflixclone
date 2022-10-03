@@ -18,12 +18,20 @@ const COMMON_STYLE: PlaceholderLineProps['style'] = {
   marginBottom: theme.spacing['4'],
 };
 
-const Line = (props: PlaceholderLineProps) => (
-  <PlaceholderLine color={DEFAULT_COLOR} style={COMMON_STYLE} {...props} />
+const Line = ({style, ...rest}: PlaceholderLineProps) => (
+  <PlaceholderLine
+    color={DEFAULT_COLOR}
+    style={{...COMMON_STYLE, ...(style as any)}}
+    {...rest}
+  />
 );
 
-const Media = (props: PlaceholderMediaProps) => (
-  <PlaceholderMedia color={DEFAULT_COLOR} style={COMMON_STYLE} {...props} />
+const Media = ({style, ...rest}: PlaceholderMediaProps) => (
+  <PlaceholderMedia
+    color={DEFAULT_COLOR}
+    style={{...COMMON_STYLE, ...(style as any)}}
+    {...rest}
+  />
 );
 
 export const Skeleton = (props: PlaceholderProps) => (
