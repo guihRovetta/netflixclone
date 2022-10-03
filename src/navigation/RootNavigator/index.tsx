@@ -3,7 +3,7 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {useTheme} from '@shopify/restyle';
 
 import {Theme} from '@internal/themes';
-import {EmptyScreen, WhatsNewScreen} from '@internal/screens';
+import {DownloadsScreen, EmptyScreen, WhatsNewScreen} from '@internal/screens';
 import {Icon} from '@internal/components';
 
 export type RootNavigatorParamList = {
@@ -72,7 +72,7 @@ export const RootNavigator = () => {
       />
       <Tab.Screen
         name="Downloads"
-        component={EmptyScreen}
+        component={DownloadsScreen}
         options={{
           unmountOnBlur: false,
           tabBarLabel: 'Downloads',
