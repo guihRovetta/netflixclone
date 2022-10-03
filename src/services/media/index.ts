@@ -19,11 +19,7 @@ const formatData = (array: ReturnType<typeof groupBy>) =>
     data: value as Item[],
   }));
 
-export const getWhatsNew = async ({
-  nextPage = 1,
-}: {
-  nextPage: number;
-}): Promise<{data: ReturnType<typeof formatData>; nextPage: number}> => {
+export const getWhatsNew = async (): Promise<ReturnType<typeof formatData>> => {
   const {data} = await axiosInstance.get<{items: Item[]}>('/whats-new');
 
   const soon = data?.items?.filter(item => item?.group === 'soon');
@@ -35,13 +31,10 @@ export const getWhatsNew = async ({
     item => item?.group === 'top10Movies',
   );
 
-  return {
-    data: [
-      ...formatData(groupBy(soon, 'releaseDate')),
-      {title: '', data: trending},
-      {title: '', data: top10TvShows},
-      {title: '', data: top10Movies},
-    ],
-    nextPage: nextPage + 1,
-  };
+  return [
+    ...formatData(groupBy(soon, 'releaseDate')),
+    {title: '', data: trending},
+    {title: '', data: top10TvShows},
+    {title: '', data: top10Movies},
+  ];
 };
