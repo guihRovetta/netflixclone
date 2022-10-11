@@ -69,6 +69,7 @@ O layout seguido foi baseado no aplicativo para iOS da Netflix, então por esse 
 - Foi criado um componente de `EmptyScreen` para mostrar algum tipo de conteúdo nas telas de **Início** e **Risadas rápidas**;
 - Para os ícones da aplicação foi utilizada a biblioteca React Native Vector Icons;
 - Para facilitar a importação do código foi configurado o recurso de *Path Aliases* que permite com que os caminhos das importações fiquem da seguinte forma `import {Theme} from '@internal/themes';`. Dessa forma, tudo que for criado nesse projeto vai possuir o prefixo `'@internal/nomeDaPasta/nomeDaSubPasta'`, facilitando assim a identificação do que é externo e interno do projeto, assim como a refatoração/movimentação de código/pastas para outras pastas sem que quebre o código nas importações; 
+- O projeto utiliza a fonte "Poppins" para os textos;
 
 ## ⌨️ Executando o projeto
 
